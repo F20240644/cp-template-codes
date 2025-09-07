@@ -2,10 +2,10 @@
 
 // 1-D prefix sums
 
-struct PrefixSum
+struct PrefixSum1D
 {
     std::vector<long long> ps;
-    PrefixSum(const std::vector<int> &v)
+    PrefixSum1D(const std::vector<int> &v)
     {
         int n = v.size();
         ps.resize(n + 1, 0LL);
@@ -17,6 +17,29 @@ struct PrefixSum
     long long sum(int l, int r)
     {
         return ps[r + 1] - ps[l];
+    }
+};
+
+// 2D prefix sums
+
+struct PrefixSum2D
+{
+    std::vector<std::vector<long long>> ps;
+    PrefixSum2D(const std::vector<std::vector<int>> &g)
+    {
+        int m = g.size(), n = g[0].size();
+        ps.assign(m + 1, std::vector<long long>(n + 1, 0LL));
+        for (int i = 0; i < m; i++)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                ps[i + 1][j + 1] = ps[i + 1][j] + ps[i][j + 1] - ps[i][j] + g[i][j];
+            }
+        }
+    }
+    long long sum(int r1, int c1, int r2, int c2)
+    {
+        return ps[r2 + 1][c2 + 1] - ps[r1][c2 + 1] - ps[r2 + 1][c1] + ps[r1][c1];
     }
 };
 
